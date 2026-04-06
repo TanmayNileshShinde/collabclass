@@ -1,0 +1,28 @@
+{
+  "name": "collabclass",
+  "version": "1.0.0",
+  "description": "Express backend for YOOM video calling app",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.1.6",
+    "@stream-io/node-sdk": "^0.1.13",
+    "@types/axios": "^0.9.36",
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "groq-sdk": "^0.37.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.19.27",
+    "tsx": "^4.7.1",
+    "typescript": "^5"
+  }
+}

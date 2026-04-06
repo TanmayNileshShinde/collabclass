@@ -1,0 +1,710 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ======== Stream.io Video Tile Fixes ======== */
+/* Ensure video tiles maintain size when video is off */
+.str-video__participant-tile,
+.str-video__participant-view {
+  position: relative !important;
+  min-height: 200px !important;
+  min-width: 200px !important;
+  flex-shrink: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+}
+
+video {
+  position: relative !important;
+  min-height: 200px !important;
+  min-width: 200px !important;
+  object-fit: cover !important;
+}
+
+/* Screen sharing videos should use contain to show full screen */
+.str-video__screen-share,
+.str-video__screen-share video,
+[class*="screen-share"] video,
+[class*="screen-share"] video,
+.str-video__participant-view[data-screen-share="true"] video,
+.str-video__participant-view:has([class*="screen"]) video,
+.str-video__participant-view:has([data-testid*="screen"]) video {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-position: center !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 15 !important;
+}
+
+/* Target any video that's a screen share by checking parent classes */
+.str-video__participant-view:has(.str-video__screen-share) video,
+.str-video__participant-tile:has(.str-video__screen-share) video {
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 15 !important;
+}
+
+/* Make screen share containers larger and fully visible */
+.str-video__participant-view:has(.str-video__screen-share),
+.str-video__participant-tile:has(.str-video__screen-share),
+.str-video__participant-view[data-screen-share="true"],
+.str-video__participant-tile[data-screen-share="true"] {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 600px !important;
+  min-height: 400px !important;
+  max-width: 100% !important;
+  max-height: calc(100vh - 150px) !important;
+  flex: 1 1 auto !important;
+  flex-grow: 2 !important;
+  z-index: 20 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure screen share video is visible and not covered by overlay */
+.str-video__participant-view:has(.str-video__screen-share) .video-off-profile-overlay,
+.str-video__participant-tile:has(.str-video__screen-share) .video-off-profile-overlay,
+.str-video__participant-view[data-screen-share="true"] .video-off-profile-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+}
+
+/* Ensure video container doesn't shrink - use important to override Stream.io defaults */
+.str-video__call-layout,
+.str-video__call {
+  min-width: 400px !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.str-video__grid-layout,
+.str-video__speaker-layout__wrapper {
+  min-width: 400px !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.str-video__grid-layout > *,
+.str-video__speaker-layout__wrapper > *,
+.str-video__participant-view,
+.str-video__participant-tile {
+  min-width: 200px !important;
+  flex-shrink: 0 !important;
+  width: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Force minimum sizes on all video-related containers */
+[class*="str-video__participant"],
+[class*="str-video__grid"],
+[class*="str-video__speaker"] {
+  flex-shrink: 0 !important;
+}
+
+/* Video off profile picture overlay */
+.video-off-profile-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  border-radius: 0.5rem !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+.video-off-avatar-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 1rem !important;
+}
+
+.video-off-avatar-image {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 3px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.video-off-avatar-initials {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  border: 3px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.video-off-name-label {
+  position: absolute !important;
+  bottom: 1rem !important;
+  left: 0.5rem !important;
+  right: 0.5rem !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  color: white !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+/* Ensure video elements don't collapse when no source */
+video:not([src]):not([srcObject]),
+video[srcObject=""] {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  display: block !important;
+}
+
+/* When video is on, make sure it's visible */
+.str-video__participant-view video,
+.str-video__participant-tile video {
+  transition: opacity 0.3s ease !important;
+}
+
+/* Ensure grid layout maintains consistent sizing */
+.str-video__grid-layout {
+  display: grid !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+  width: 100% !important;
+  min-width: 400px !important;
+  flex-shrink: 0 !important;
+}
+
+.str-video__grid-layout > * {
+  min-height: 200px !important;
+  min-width: 200px !important;
+  aspect-ratio: 16/9 !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+  width: auto !important;
+}
+
+/* Speaker layout fixes */
+.str-video__speaker-layout__wrapper {
+  width: 100% !important;
+  min-width: 400px !important;
+  flex-shrink: 0 !important;
+  max-height: none !important;
+  height: 100% !important;
+  min-height: 400px !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+}
+
+.str-video__speaker-layout__participant {
+  min-width: 200px !important;
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+  background: transparent !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.str-video__speaker-layout__participant .str-video__participant-view,
+.str-video__speaker-layout__participant .str-video__participant-tile {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 150px !important;
+  flex: 0 0 auto !important;
+  aspect-ratio: 16/9 !important;
+  position: relative !important;
+}
+
+/* Main speaker video - consolidated rules */
+.str-video__speaker-layout__main-participant {
+  min-width: 400px !important;
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 400px !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  align-items: stretch !important;
+}
+
+.str-video__speaker-layout__main-participant .str-video__participant-view,
+.str-video__speaker-layout__main-participant .str-video__participant-tile {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 400px !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.str-video__speaker-layout__main-participant video,
+.str-video__speaker-layout__main-participant .str-video__participant-view video,
+.str-video__speaker-layout__main-participant .str-video__participant-tile video {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: block !important;
+}
+
+/* Participant bar in speaker layout */
+.str-video__speaker-layout__participants-bar {
+  overflow: visible !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+}
+
+.str-video__speaker-layout__participants-bar .str-video__participant-view,
+.str-video__speaker-layout__participants-bar .str-video__participant-tile {
+  overflow: hidden !important;
+  background: transparent !important;
+  width: 100% !important;
+  min-height: 150px !important;
+  height: auto !important;
+  aspect-ratio: 16/9 !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  position: relative !important;
+  display: block !important;
+}
+
+.str-video__speaker-layout__participants-bar .str-video__participant-view video,
+.str-video__speaker-layout__participants-bar .str-video__participant-tile video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: block !important;
+}
+
+/* Ensure participant bar container doesn't constrain height */
+.str-video__speaker-layout__participants-bar-container,
+[class*="participants-bar"] {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  flex: 1 1 auto !important;
+}
+
+/* ======== Modern Glassmorphism Styles ======== */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.glassmorphism2 {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glassmorphism-card {
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glassmorphism-card:hover {
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.glassmorphism-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.glassmorphism-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.glassmorphism-button-active {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ======== Modern Dark Theme Variables ======== */
+:root {
+  --glass-bg: rgba(17, 17, 17, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --accent: #1a1a1a;
+  --accent-hover: #2a2a2a;
+}
+
+/* ======== stream css overrides ======== */
+.str-video__call-stats {
+  max-width: 500px;
+  position: relative;
+}
+
+.str-video__speaker-layout__wrapper {
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* Screen share container fixes */
+.str-video__screen-share-container,
+.str-video__screen-share__container,
+.str-video__participant-view[data-screen-share="true"],
+.str-video__participant-view:has([class*="screen"]) {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 600px !important;
+  min-height: 400px !important;
+  max-height: calc(100vh - 150px) !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 auto !important;
+  flex-grow: 2 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 20 !important;
+}
+
+/* Ensure screen share video containers don't get cut off */
+.str-video__call-layout:has([class*="screen-share"]),
+.str-video__speaker-layout__wrapper:has([class*="screen-share"]),
+.str-video__grid-layout:has([class*="screen-share"]),
+.str-video__speaker-layout__main-participant:has([class*="screen-share"]) {
+  overflow: visible !important;
+  max-height: none !important;
+  height: 100% !important;
+  min-height: 500px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Main participant container when sharing screen - make it bigger */
+.str-video__speaker-layout__main-participant:has([class*="screen-share"]),
+.str-video__speaker-layout__main-participant:has(.str-video__screen-share) {
+  overflow: visible !important;
+  height: 100% !important;
+  min-height: 500px !important;
+  max-height: calc(100vh - 150px) !important;
+  flex: 2 1 auto !important;
+  flex-grow: 3 !important;
+  width: 100% !important;
+}
+
+.str-video__speaker-layout__main-participant:has([class*="screen-share"]) video,
+.str-video__speaker-layout__main-participant:has(.str-video__screen-share) video {
+  object-fit: contain !important;
+  max-height: calc(100vh - 150px) !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Screen share video element specific fixes */
+.str-video__screen-share video,
+[class*="screen-share"] video {
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: calc(100vh - 150px) !important;
+  min-height: 400px !important;
+  display: block !important;
+}
+
+.str-video__participant-details {
+  color: white;
+}
+
+/* Ensure participant names display properly instead of user IDs */
+.str-video__participant-details__name {
+  font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.str-video__participant-view {
+  position: relative;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure video elements fill their containers completely */
+.str-video__participant-view video,
+.str-video__participant-tile video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+}
+
+/* Specific fix for main participant video to prevent cutting */
+.str-video__speaker-layout__main-participant video,
+.str-video__speaker-layout__main-participant .str-video__participant-view video {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+.str-video__participant-view .str-video__participant-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.str-video__menu-container {
+  color: white;
+}
+
+.str-video__notification {
+  color: white;
+}
+
+.str-video__participant-list {
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  border-radius: 16px;
+  color: white;
+  height: 100%;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dark .str-video__participant-list {
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:not(.dark) .str-video__participant-list {
+  background: rgba(248, 248, 248, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #000000;
+}
+
+.str-video__call-controls__button {
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.str-video__call-controls__button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ==== clerk class override ===== */
+
+.cl-userButtonPopoverActionButtonIcon {
+  color: white;
+}
+
+.cl-logoBox {
+  height: 40px;
+}
+
+.cl-dividerLine {
+  background: rgba(255, 255, 255, 0.08);
+  height: 1px;
+}
+
+.dark .cl-dividerLine {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cl-socialButtonsIconButton {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cl-internal-wkkub3 {
+  color: white;
+}
+
+.cl-userButtonPopoverActionButton {
+  color: white;
+}
+
+.cl-userButtonPopoverActionButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* =============================== */
+
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+}
+
+/* animation */
+
+.show-block {
+  width: 100%;
+  max-width: 350px;
+  display: block;
+  animation: show 0.7s forwards linear;
+}
+
+@keyframes show {
+  0% {
+    animation-timing-function: ease-in;
+    width: 0%;
+  }
+
+  100% {
+    animation-timing-function: ease-in;
+    width: 100%;
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Gradient animation for text */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
